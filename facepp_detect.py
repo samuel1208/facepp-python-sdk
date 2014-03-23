@@ -35,7 +35,7 @@ def saveRes(xml_path, res):
     for f in faces:
         face_sub = ET.SubElement(root,'face')
         ### write positions
-        face_pos = ET.SubElement(face_sub,'postion')
+        face_pos = ET.SubElement(face_sub,'position')
         x_c = f['position']['center']['x']*img_width/100
         y_c = f['position']['center']['y']*img_height/100
         width = f['position']['width']*img_width/100
@@ -62,11 +62,8 @@ def saveRes(xml_path, res):
         age_val.text = repr(attr['age']['value'])
         age_range = ET.SubElement(age,'range')
         gender_con.text = repr(attr['age']['range'])
-        
-        
-        
-
-
+    
+    ### Save to file
     xmlStr=ET.tostring(root,encoding='utf-8',method='xml') 
     xmlStr=minidom.parseString(xmlStr).toprettyxml() 
     xmlFile=open(xml_path, 'w')
@@ -99,6 +96,7 @@ def main():
     if bIsHelp:
         usage()
         return
+
     try:
         jpg_path_list=args[0]
         if not os.path.exists(jpg_path_list):
@@ -109,6 +107,7 @@ def main():
 
     path_file = open(jpg_path_list, 'r')
     path_list = path_file.readlines()
+    path_file.close()
 
     for p in path_list:
         p = p.strip()
@@ -123,5 +122,6 @@ def main():
 
         xml_path = "%s_facepp.xml"%(file_name)    
         saveRes(xml_path, res)
+
 if '__main__' == __name__:
     main()
